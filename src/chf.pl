@@ -55,7 +55,6 @@ sub to_xml {
     <item arg="$url" valid="YES" type="default">
         <title>$title</title>
         <subtitle>$url</subtitle>
-        <icon type="fileicon">icon.png</icon>
     </item>
 ITEM
     }
