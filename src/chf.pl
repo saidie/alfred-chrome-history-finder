@@ -4,10 +4,13 @@ use strict;
 use warnings;
 use utf8;
 
+use Encode;
+use Unicode::Normalize;
 use File::Copy;
 
 my $args = join(' ', @ARGV);
-$args =~ s/[^0-9A-Za-z\/]/ /g;
+$args = Encode::decode('utf-8', $args);
+$args = Unicode::Normalize::NFC($args);
 
 my $profile = 'Default';
 my $history_file = "$ENV{'HOME'}/Library/Application Support/Google/Chrome/$profile/History";
@@ -27,6 +30,13 @@ if ( -f $history_copy ) {
 }
 else {
     copy($history_file, $history_copy);
+}
+
+sub sql_escape {
+    my $word = shift;
+    $word =~ s/'/''/g;
+    $word =~ s/%/\%/g;
+    return $word;
 }
 
 sub xml_escape {
@@ -68,7 +78,7 @@ XML
 
 }
 
-my @words = split(' ', $args);
+my @words = map { sql_escape($_) } split(' ', $args);
 my @conditions = map { "(url LIKE '%$_%' OR title LIKE '%$_%')" } @words;
 push @conditions, "url LIKE 'http%'";
 push @conditions, 'hidden = 0';
