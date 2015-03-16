@@ -7,7 +7,7 @@ use utf8;
 use File::Copy;
 
 my $args = join(' ', @ARGV);
-$args =~ s/[^A-Za-z]/ /g;
+$args =~ s/[^A-Za-z\/]/ /g;
 
 my $profile = 'Default';
 my $history_file = "$ENV{'HOME'}/Library/Application Support/Google/Chrome/$profile/History";
