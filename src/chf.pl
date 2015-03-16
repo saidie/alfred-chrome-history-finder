@@ -24,7 +24,7 @@ if ( ! -f $history_file ) {
 
 if ( -f $history_copy ) {
     my $diff = (stat($history_file))[9] - (stat($history_copy))[9];
-    if ( $expire > $diff ) {
+    if ( $expire < $diff ) {
         copy($history_file, $history_copy);
     }
 }
