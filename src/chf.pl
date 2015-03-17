@@ -35,7 +35,7 @@ else {
 sub sql_escape {
     my $word = shift;
     $word =~ s/'/''/g;
-    $word =~ s/%/\%/g;
+    $word =~ s/([\%_])/\\$1/g;
     return $word;
 }
 
@@ -79,7 +79,7 @@ XML
 }
 
 my @words = map { sql_escape($_) } split(' ', $args);
-my @conditions = map { "(url LIKE '%$_%' OR title LIKE '%$_%')" } @words;
+my @conditions = map { "(url LIKE '%$_%' ESCAPE '\\' OR title LIKE '%$_%' ESCAPE '\\')" } @words;
 push @conditions, "url LIKE 'http%'";
 push @conditions, 'hidden = 0';
 
